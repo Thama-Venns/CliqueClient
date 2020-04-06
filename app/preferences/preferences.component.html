@@ -1,0 +1,140 @@
+<app-dashboard></app-dashboard>
+ 
+<div class="container">
+  <div class="row">
+    <div class="col-md-8 content">
+      <div class="card">
+        
+        <div class="card-header">
+          <div class="post-head">
+              <p style="font-size: 1.5em; font-weight: bold">Preferences</p>
+  
+              <div class="group-actions">
+                  <button mat-button (click)="ShowContent('content')"><mat-icon>build</mat-icon> Content Sharing</button>
+                  <button mat-button (click)="ShowContent('privacy')"><mat-icon>lock</mat-icon> Privacy Settings</button>
+                  <!--<button class="float-right" mat-button (click)="openAddMembersDialog()">
+                      <mat-icon>group_add</mat-icon> Manage Profile
+                  </button>-->
+              </div>
+          </div>
+        </div>
+        
+        <!-- Preferences/Settings -->
+        <div class="card-body" *ngIf="show === 'content'">
+          <form #selectForm="ngForm">
+            <p style="font-size: 1.5em; font-weight: bold">Take control of your data.</p>
+            
+            <mat-divider></mat-divider>
+            <label id="radio-label">How would you like to handle preference negotiations?</label>
+            <mat-radio-group class="radio-group" [(ngModel)]="myPermissions.allow" name="allow" aria-labelledby="radio-label"><br>
+              <mat-radio-button class="radio-button" [value]="1">Allow all.</mat-radio-button><br>
+              <mat-radio-button class="radio-button" [value]="0">Deny all.</mat-radio-button><br>
+              <mat-radio-button class="radio-button" [value]="2">Notify me.</mat-radio-button>
+            </mat-radio-group>
+            <mat-divider></mat-divider>
+            
+            <label id="ckeck-label">Would you like like your content to be <b>shared</b> to other groups?</label>
+            <mat-radio-group class="radio-group" [(ngModel)]="myPermissions.rights.share" name="share" aria-label="Select an option"><br>
+              <mat-radio-button class="radio-button" [value]="1">Yes</mat-radio-button><br>
+              <mat-radio-button class="radio-button" [value]="0">No</mat-radio-button>
+            </mat-radio-group>
+            <mat-divider></mat-divider>
+
+            <label id="ckeck-label">Would you like to allow collaborations for your posts?</label>
+            <mat-radio-group class="radio-group" [(ngModel)]="myPermissions.rights.collaborate" name="collaborate" aria-label="Select an option"><br>
+              <mat-radio-button class="radio-button" [value]="1">Yes</mat-radio-button><br>
+              <mat-radio-button class="radio-button" [value]="0">No</mat-radio-button>
+            </mat-radio-group>
+            <mat-divider></mat-divider>
+
+            <label id="ckeck-label">Would you like to be tags in public content?</label>
+            <mat-radio-group class="radio-group" [(ngModel)]="myPermissions.rights.tag" name="tag" aria-label="Select an option"><br>
+              <mat-radio-button class="radio-button" [value]="1">Yes</mat-radio-button><br>
+              <mat-radio-button class="radio-button" [value]="0">No</mat-radio-button>
+            </mat-radio-group>
+            <mat-divider></mat-divider>
+
+            <!--<label id="ckeck-label">Hide your profile to public groups.</label><br>
+            <mat-radio-group class="radio-group" aria-label="Select an option">
+              <mat-radio-button class="radio-button" value="1">Yes</mat-radio-button>
+              <mat-radio-button class="radio-button" value="2">No</mat-radio-button>
+            </mat-radio-group>   
+            <mat-divider></mat-divider> -->
+            
+            <!--<label id="ckeck-label">Allow mentions on comments?</label><br>
+            <mat-radio-group class="radio-group" [(ngModel)]="myPermissions.rights.mention" name="mention" aria-label="Select an option">
+              <mat-radio-button class="radio-button" [value]="1">Yes</mat-radio-button><br>
+              <mat-radio-button class="radio-button" [value]="0">No</mat-radio-button>
+            </mat-radio-group> 
+            <mat-divider></mat-divider> -->
+            
+            <br>
+            <div class="example-button-row">
+              <button style="padding-right: 30px" mat-raised-button>Reset</button>
+              <button mat-raised-button (click)="setPreferences(myPermissions)">Save</button>
+            </div>
+
+          </form>
+        </div>
+
+        <!-- Managed groups group settings -->
+        <div class="card-body" *ngIf="show === 'privacy'">
+            <form #selectForm="ngForm">
+              <p style="font-size: 1.5em; font-weight: bold">Take control of your data privacy.</p>
+              
+              <mat-divider></mat-divider>
+             
+              <label id="ckeck-label">Hide my profile to the public</label>
+              <mat-radio-group class="radio-group" [(ngModel)]="myPermissions.rights.share" name="share" aria-label="Select an option"><br>
+                <mat-radio-button class="radio-button" [value]="1">Yes</mat-radio-button><br>
+                <mat-radio-button class="radio-button" [value]="0">No</mat-radio-button>
+              </mat-radio-group>
+              <mat-divider></mat-divider>
+  
+              <label id="ckeck-label">Hide my email to the public</label>
+              <mat-radio-group class="radio-group" [(ngModel)]="myPermissions.rights.collaborate" name="collaborate" aria-label="Select an option"><br>
+                <mat-radio-button class="radio-button" [value]="1">Yes</mat-radio-button><br>
+                <mat-radio-button class="radio-button" [value]="0">No</mat-radio-button>
+              </mat-radio-group>
+              <mat-divider></mat-divider>
+  
+              <label id="ckeck-label">Hide my dat of birth</label>
+              <mat-radio-group class="radio-group" [(ngModel)]="myPermissions.rights.tag" name="tag" aria-label="Select an option"><br>
+                <mat-radio-button class="radio-button" [value]="1">Yes</mat-radio-button><br>
+                <mat-radio-button class="radio-button" [value]="0">No</mat-radio-button>
+              </mat-radio-group>
+              <mat-divider></mat-divider>
+
+              <label id="ckeck-label">Hide my last seen</label>
+              <mat-radio-group class="radio-group" [(ngModel)]="myPermissions.rights.tag" name="tag" aria-label="Select an option"><br>
+                <mat-radio-button class="radio-button" [value]="1">Yes</mat-radio-button><br>
+                <mat-radio-button class="radio-button" [value]="0">No</mat-radio-button>
+              </mat-radio-group>
+              <mat-divider></mat-divider>
+              
+              <br>
+              <div class="example-button-row">
+                <button style="padding-right: 30px" mat-raised-button>Reset</button>
+                <button mat-raised-button (click)="setPreferences(myPermissions)">Save</button>
+              </div>
+  
+            </form>
+          </div>
+      
+      </div>
+    </div> 
+
+    <!-- Right pane -->
+    <div class="col-md-4">
+      <div class="card mb-2 shadow-sm" style="padding-top: 15px">
+        <div class="info card-body">
+          <svg class="bd-placeholder-img rounded-circle" width="100" height="100" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 140x140"><title>Placeholder</title><rect width="100%" height="100%" fill="#777"></rect><text x="50%" y="50%" fill="#777" dy=".3em">140x140</text></svg>
+          <h5>{{profile.firstName + " " + profile.lastName}}</h5>
+          <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus.</p>
+          <p><a class="btn btn-secondary" style="color: #fff;" routerLink="profile" role="button">View profile »</a></p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

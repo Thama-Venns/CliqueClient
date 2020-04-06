@@ -1,0 +1,65 @@
+/* You can add global styles to this file, and also import other style files */
+@import '../node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css';
+@import '../src/assets/iconfont/iconfont/material-icons.css';
+
+* {
+    box-sizing: border-box;
+    font-size-adjust: 0.38;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    text-decoration: none;
+    text-align: justify;
+    text-justify: inter-word;
+}
+
+body {
+    background: rgba(248, 248, 248, 0.2); //#fafafa
+  }
+
+a:hover {
+    cursor: pointer;
+    color: #26A69A;
+}
+
+.post-head p {
+    display: inline;
+    padding-right: 6px;
+}
+
+.post-avatar {
+    border-radius: 50%;
+    position: relative;
+}
+
+.name {
+    padding-left: 10px;
+}
+
+.card-body {padding: 10px;}
+embed {
+  top: 3.5px;
+  //border-radius: 50%;
+}
+
+hr {
+    margin-top: 7px;
+    margin-bottom: 3px;
+}
+
+.dropdown-toggle::after {
+    display:none;
+}
+
+
+.info, .rounded-circle, .info p, .info h5 {
+    text-align: center;
+    display: block;
+    margin-left: auto;
+    margin-right: auto
+}
+
+
+.pane {
+    
+}

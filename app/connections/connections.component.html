@@ -1,0 +1,137 @@
+<app-dashboard></app-dashboard>
+
+<div class="container">
+
+  <div class="row">
+
+    <div class="col-md-8">
+      <div class="card mb-2 shadow-sm">
+        <div class="card-header">
+          <div class="post-head">
+            <p style="font-size: 1.5em; font-weight: bold">People</p>
+            <!--<small class="text-muted float-right">recommend to.., join group</small>-->
+
+            <div class="group-actions">
+              <button mat-button (click)="ShowContent('people')"> <mat-icon>group</mat-icon> People</button>
+              <button mat-button (click)="ShowContent('connections')"> <mat-icon>sort</mat-icon>Connections</button>
+              <button mat-button (click)="ShowContent('public-groups')"> <mat-icon>sort</mat-icon>Public Groups</button>
+              <button class="float-right" mat-button (click)="openAddMembersDialog()">
+                <mat-icon>group_add</mat-icon> Add Members
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="card-body" *ngIf="show === 'people'">
+          <h6 style="font-size: 1em; font-weight: bold">People</h6>
+          <div *ngFor="let profile of profiles">
+            <mat-list-item *ngIf="profile.id != user">
+              <div class="requests d-flex justify-content-between align-items-center bottom-actions">
+                <div class="float-left" style="width: 10%; height: inherit; position: absolute;">
+                    <mat-icon style="font-size: 50px;">account_circle</mat-icon>
+                </div>
+                <div class="user-info" style="padding-left: 10%; padding-top: 3%">
+                  <p>
+                    <a routerLink>{{profile.firstName + " " + profile.lastName}}</a>
+                  </p>
+                </div>
+                <div class="action-buttons" *ngIf="!isConnection(profile.id)" style="padding: 0; margin: 0;">
+                  <button class="acc" (click)="createConnection(user, profile.id)" class="float-right" style="margin-left: 50" mat-button>
+                    Invite
+                  </button>
+                </div>
+                <div class="action-buttons" *ngIf="isConnection(profile.id)" style="padding: 0; margin: 0;">
+                  <div class="acc" *ngIf="isConnection(profile.id).accepted; else elseBlock" class="float-right" style="margin-left: 50">
+                    <button class="acc" class="float-right" style="margin-left: 50" mat-button>
+                      Cancel
+                    </button>
+                    <button class="acc" class="float-right" style="margin-left: 50" mat-button disabled>
+                      Connection
+                    </button>
+                  </div>
+                  
+                  <ng-template #elseBlock>
+                    <button class="acc" class="float-right" style="margin-left: 50" mat-button>
+                      Cancel
+                    </button>
+                    <button class="acc" class="float-right" style="margin-left: 50" mat-button disabled>
+                      Requested
+                    </button>
+                  </ng-template>
+                </div>
+              </div>
+            </mat-list-item>
+          </div>
+        </div>
+
+        <div class="card-body" *ngIf="show === 'connections'">
+          <h6 style="font-size: 1em; font-weight: bold">Connections</h6>
+          <div *ngFor="let connection of connections">
+            <mat-list-item *ngIf="connection.accepted === true">
+              <div class="requests d-flex justify-content-between align-items-center bottom-actions">
+                  <div class="float-left" style="width: 10%; height: inherit; position: absolute;">
+                      <mat-icon style="font-size: 80px;">account_circle</mat-icon>
+                  </div>
+                  <div class="user-info" style="padding-left: 13%; padding-top: 3%">
+                      <p *ngIf="connection.receiver.id === user">
+                          <a routerLink>{{connection.requester.firstName + " " + connection.requester.lastName}}</a>
+                          is your connection.
+                          <br style="padding: 0; margin: 0">
+                          <small>Joined: {{connection.requester.joined | date:'medium'}}</small>
+                      </p>
+                      <p *ngIf="connection.requester.id === user">
+                          <a routerLink>{{connection.receiver.firstName + " " + connection.receiver.lastName}}</a>
+                          is your connection.
+                          <br style="padding: 0; margin: 0">
+                          <small>Joined: {{connection.receiver.joined | date:'medium'}}</small>
+                      </p>
+                  </div>
+                  <div class="action-buttons" style="padding: 0; margin: 0;">
+                      <button class="acc" (click)="cancelConnection(connection.id)" class="float-right" style="margin-left: 50" mat-icon-button>
+                          <mat-icon>check</mat-icon>
+                      </button>
+                  </div>
+              </div>
+            </mat-list-item>
+          </div>
+        </div>
+
+        <div class="card-body" *ngIf="show === 'public-groups'">
+          <h6 style="font-size: 1em; font-weight: bold">Public Groups</h6>
+          <div *ngFor="let group of groups" style="padding: 0">
+            <mat-list-item (click)="getGroupById(group.id)" class="group-link">
+              <div class="requests d-flex justify-content-between align-items-center bottom-actions">
+                <div class="float-left" style="width: 2%; height: inherit; position: absolute;">
+                  <mat-icon style="font-size: 40px;">people</mat-icon>
+                </div>
+                <div class="user-info" style="padding-left: 8%; padding-top: 1.5%">
+                  <p>
+                    <a routerLink="/groups/{{group.groupName}}">{{group.groupName}}</a>
+                  </p>
+                </div>
+                <div class="action-buttons" style="padding: 0; margin: 0;">
+                  <button class="add-group-button float-right" mat-icon-button (click)="openRemoveGroupDialog(group)">
+                    <mat-icon>exit_to_app</mat-icon>
+                  </button>
+                </div>
+              </div>
+            </mat-list-item>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Right pane -->
+    <div class="col-md-4">
+      <div class="card mb-2 shadow-sm" style="padding-top: 15px">
+        <div class="info card-body">
+          <svg class="bd-placeholder-img rounded-circle" width="100" height="100" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 140x140"><title>Placeholder</title><rect width="100%" height="100%" fill="#777"></rect><text x="50%" y="50%" fill="#777" dy=".3em">140x140</text></svg>
+          <h5>{{profile.firstName + " " + profile.lastName}}</h5>
+          <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus.</p>
+          <p><a class="btn btn-secondary" style="color: #fff;" routerLink="profile" role="button">View profile »</a></p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

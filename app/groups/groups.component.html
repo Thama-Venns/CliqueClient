@@ -1,0 +1,211 @@
+
+<app-dashboard></app-dashboard>
+<div class="container">
+  
+  <div class="row">
+    <div class="col-md-8">
+      <div class="card mb-2 shadow-sm">
+        <div class="card-header">
+          <div class="post-head">
+            <p style="font-size: 1.5em; font-weight: bold">{{group.groupName}}</p>
+            <small class="text-muted float-right">
+              <p *ngIf="!profileExists(); elseBlock">
+                  <button class="float-right" mat-button (click)="openAddMembersDialog()">
+                    <mat-icon>group_add</mat-icon> Join group
+                  </button>
+              </p>
+              <ng-template #elseBlock>
+                <p class="float-right" (click)="openAddMembersDialog()">
+                  <mat-icon>group_add</mat-icon> Member
+                </p>
+              </ng-template>
+            </small>
+
+            <div class="group-actions">
+              <button mat-button (click)="ShowContent('posts')"> <mat-icon>sort</mat-icon>Posts</button>
+              <button mat-button (click)="ShowContent('members')"> <mat-icon>group</mat-icon> {{ group.members.length }} Members</button>
+              <button class="float-right" mat-button (click)="openAddMembersDialog()">
+                <mat-icon>group_add</mat-icon> Add Members
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="post">
+            <div class="post-field">
+              <input class="form-control z-depth-1" type="text" name="post-text" placeholder="Create a post to {{group.groupName}}">
+            </div>
+            <div class="float-right">
+              <button mat-icon-button>
+                <mat-icon>add_a_photo</mat-icon>
+              </button>
+              <button mat-icon-button>
+                <mat-icon>group</mat-icon>
+              </button>
+              <button mat-icon-button>
+                <mat-icon>send</mat-icon>
+              </button>
+            </div>
+          </div>
+        </div><hr>
+        <div class="card-body">
+          <div class="group-info">
+            <p>Created by: {{group.profile.firstName + " " + group.profile.lastName}}</p>
+          </div>
+        </div><hr>
+
+        <!-- Tag Content -->
+          <!-- Members -->
+
+        <div class="card-body" *ngIf="show === 'connections'">
+          <h6>Connections</h6>
+          <div *ngFor="let connection of connections">
+            <mat-list-item *ngIf="connection.accepted === true">
+              <div class="requests d-flex justify-content-between align-items-center bottom-actions">
+                  <div class="float-left" style="width: 10%; height: inherit; position: absolute;">
+                      <mat-icon style="font-size: 80px;">account_circle</mat-icon>
+                  </div>
+                  <div class="user-info" style="padding-left: 13%; padding-top: 3%">
+                      <p *ngIf="connection.receiver.id === user">
+                          <a routerLink>{{connection.requester.firstName + " " + connection.requester.lastName}}</a>
+                          sent you a connection request.
+                          <br style="padding: 0; margin: 0">
+                          <small>Joined: {{connection.requester.joined | date:'medium'}}</small>
+                      </p>
+                      <p *ngIf="connection.requester.id === user">
+                          <a routerLink>{{connection.receiver.firstName + " " + connection.receiver.lastName}}</a>
+                          sent you a connection request.
+                          <br style="padding: 0; margin: 0">
+                          <small>Joined: {{connection.receiver.joined | date:'medium'}}</small>
+                      </p>
+                  </div>
+                  <div class="action-buttons" style="padding: 0; margin: 0;">
+                      <button class="acc" (click)="cancelConnection(connection.id)" class="float-right" style="margin-left: 50" mat-icon-button>
+                          <mat-icon>check</mat-icon>
+                      </button>
+                  </div>
+              </div>
+            </mat-list-item>
+          </div>
+        </div>
+
+          <div class="card-body" *ngIf="show === 'members'">
+            <h6 style="font-size: 1em; font-weight: bold">Members</h6>
+            <div *ngIf="group != undefined">
+              <mat-list-item *ngFor="let member of group.members" class="group-members">
+                <div class="requests d-flex justify-content-between align-items-center bottom-actions">
+                  <div class="float-left" style="width: 10%; height: inherit; position: absolute;">
+                      <mat-icon style="font-size: 50px;">account_circle</mat-icon>
+                  </div>
+                  <div class="user-info" style="padding-left: 8%; padding-top: 1.5%">
+                    <p>{{member.firstName + " " + member.lastName}}</p>
+                  </div>
+                </div>
+              </mat-list-item>
+            </div>
+          </div>
+
+          <!-- Posts -->
+          <div class="card-body w-100" *ngIf="show === 'posts'">
+            <h6 style="font-size: 1em; font-weight: bold">Posts</h6>
+            <div *ngIf="posts.length !== undefined; elseBlock">
+              <ul *ngFor="let post of posts">
+                <!--<li class="float-left"><mat-icon [inline]="true">account_circle</mat-icon></li>-->
+                <li class="apost">
+                  <div class="float-left" style="width: 10%; height: inherit; position: absolute;">
+                    <mat-icon style="font-size: 70px;">account_circle</mat-icon>
+                  </div>
+                  <div style="margin-left: 13%; margin-right: 2%; padding-top: 10px;">
+                    <h6 style="font-weight: bold">
+                      {{post.profile.firstName}} {{post.profile.lastName}}
+                      <small class="text-muted float-right">{{post.creation | date:'medium'}}</small>
+                    </h6>
+                    
+                    <p ngbDropdown  class="group">
+                      <small class="text-muted">Group: <a routerLink="groups/{{post.group.groupName}}">{{post.group.groupName}}</a></small>
+                      <small ngbDropdownToggle class="float-right"><mat-icon>more_horiz</mat-icon>
+                          <div ngbDropdownMenu style="padding: 0">
+                          <button ngbDropdownItem>Action - 1</button>
+                          <button ngbDropdownItem>Another Action</button>
+                          <button ngbDropdownItem>Something else is here</button>
+                          </div>
+                      </small>
+                    </p>
+                    <p>{{post.postText}}</p>
+                    <!-- actions -->
+                    <div class="group-actions" style="padding: 0; border: 1px solid #f7f7f7">
+                      <div class="btn-group">
+                        <button mat-icon-button (click)="likePost(post.id)" matTooltip="Like">
+                          <mat-icon>thumb_up_alt</mat-icon>
+                        </button>
+                        <button mat-icon-button matTooltip="Share" (click)="sharePost(user, post.id)">
+                          <mat-icon>share</mat-icon>
+                        </button>
+                        <button mat-icon-button matTooltip="Comments">
+                          <mat-icon>comment</mat-icon>
+                        </button>
+                      </div>
+                      <!--Right-->
+                      <div class="float-right">
+                        <button mat-icon-button matTooltip="collaborate">
+                          <mat-icon>format_quote</mat-icon>
+                        </button>
+                        <button mat-icon-button matTooltip="Dispute">
+                          <mat-icon>pan_tool</mat-icon>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <ng-template #elseBlock>
+              <div>
+                <p style="margin-left: 35%"><mat-icon style="font-size: 15em">announcement</mat-icon></p><br>
+                <h6 style="font-size: 1.2em; text-align: center">There is nothing posted on this group.</h6>
+              </div>
+            </ng-template>
+          </div>
+
+      </div>
+    </div>
+
+    <!-- Right pane -->
+    <div class="col-md-4 order-md-2 mb-4">
+
+      <div class="card-deck mb-2">
+        <div class="card mb-2 shadow-sm">
+          <div class="card-header" style="padding: 10px; display: inline-flex;">
+            <h4 class="my-1 font-weight-normal">My Groups</h4>
+            <button mat-icon-button class="add-group-button" (click)="openCreateGroupDialog()">
+              <mat-icon>control_point</mat-icon>
+            </button>
+          </div>
+          <div class="card-body" style="padding: 0">
+            <div class="list-group mb-3" style="padding: 0">
+                <mat-list *ngFor="let group of groups" style="padding: 0">
+                  <mat-list-item (click)="getGroupById(group.id)" (click)="getGroupPosts(group.id)" class="group-link" style="padding: 0">
+                    <button class="add-group-button" mat-icon-button (click)="openRemoveGroupDialog(group)">
+                      <mat-icon>exit_to_app</mat-icon>
+                    </button>
+                    <a>{{group.groupName}}</a>
+                  </mat-list-item>
+              </mat-list>
+            </div>
+          </div>
+        </div>
+      </div><br>
+
+      <div class="card mb-2 shadow-sm" style="padding-top: 15px">
+        <div class="info card-body">
+          <svg class="bd-placeholder-img rounded-circle" width="100" height="100" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 140x140"><title>Placeholder</title><rect width="100%" height="100%" fill="#777"></rect><text x="50%" y="50%" fill="#777" dy=".3em">140x140</text></svg>
+          <h5>{{profile.firstName + " " + profile.lastName}}</h5>
+          <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus.</p>
+          <p><a class="btn btn-secondary" href="#" role="button">View details »</a></p>
+        </div>
+      </div>
+
+    </div>
+
+  </div>      
+</div>

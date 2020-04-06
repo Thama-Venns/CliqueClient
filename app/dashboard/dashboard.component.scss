@@ -1,0 +1,66 @@
+.row {
+    display: inline;
+    padding: 0;
+    margin: 0;
+}
+
+// .thama {
+//   margin-left: 150 !important;
+// }
+
+/*
+ * Sidebar
+ */
+  
+  @supports ((position: -webkit-sticky) or (position: sticky)) {
+    .sidebar-sticky {
+      position: -webkit-sticky;
+      position: sticky;
+    }
+  }
+  
+  .sidebar .nav-link {
+    color: #333;
+    padding-left: 0;
+    margin-left: 0;
+  }
+
+  .sidebar {
+    border-right: 1px solid rgb(212, 212, 212);
+  }
+  
+  .nav {
+    width: 150px;
+    position: fixed;
+  }
+
+  .sidebar .nav-link .feather {
+    margin-right: 4px;
+    color: #999;
+  }
+  
+  .sidebar .nav-link.active {
+    color: #26A69A;
+  }
+  
+  .sidebar .nav-link:hover .feather,
+  .sidebar .nav-link.active .feather {
+    color: #26A69A;
+  }
+
+  .nav-link {
+    text-align: left;
+    width: 100%;
+  }
+
+  .notifications {
+    width: 100%;
+  }
+
+  .nav-item :hover {
+    color: #26A69A;
+  }
+
+  .nav-item {
+    padding: 5;
+  }

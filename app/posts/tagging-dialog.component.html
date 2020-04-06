@@ -1,0 +1,27 @@
+<div mat-dialog-content>
+  <div class="search-container">
+    <mat-form-field>
+      <input matInput #input placeholder="Search profiles to tag.">
+    </mat-form-field>
+  </div>      
+</div>
+<div class="tags">
+  <ol *ngFor="let connection of connections">
+    <li *ngIf="connection.requester.id === user">
+      <a routerLink>
+        {{connection.receiver.firstName}} {{connection.receiver.lastName}}
+      </a>
+      <mat-checkbox [(ngModel)]="data.collaborations.profile" (change)="onChange($event)" [value]="connection.receiver" name="tag" class="float-right"></mat-checkbox>
+    </li>
+    <li *ngIf="connection.requester.id !== user">
+      <a routerLink>
+        {{connection.requester.firstName}} {{connection.requester.lastName}}
+      </a>
+      <mat-checkbox [(ngModel)]="data.collaborations.profile" (change)="onChange($event)" [value]="connection.requester" name="tag" class="float-right"></mat-checkbox>
+    </li>
+  </ol>   
+</div>
+<div mat-dialog-actions>
+  <button mat-raised-button [mat-dialog-close]="addTags()" cdkFocusInitial>Add Tags</button>
+  <button mat-raised-button (click)="onNoClick()">Cancel</button>
+</div>

@@ -1,0 +1,8 @@
+<h1 mat-dialog-title>Remove Group?</h1>
+<div mat-dialog-content>
+    Are you sure you want to remove {{data.group.groupName}} group?
+</div>
+<div mat-dialog-actions>
+  <button mat-button [mat-dialog-close]="Closed">Cancel</button>
+  <button mat-button (click)="removeGroup(data.group.id)">Remove</button>
+</div>

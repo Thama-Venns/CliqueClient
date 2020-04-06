@@ -1,0 +1,16 @@
+<h1 mat-dialog-title>Create Group</h1>
+<div mat-dialog-content>
+    <form #groupForm="ngForm">
+        <mat-form-field appearance="outline">
+            <mat-label>Group Name</mat-label>
+            <input [(ngModel)]="groupModel.groupName" name="groupName" matInput placeholder="eg. Family">
+        </mat-form-field><br>
+        <mat-checkbox [(ngModel)]="groupModel.isPrivate" name="isPrivate">Private {{groupModel.isPrivate}}</mat-checkbox>
+    </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-button [mat-dialog-close]="Closed">Cancel</button>
+  <button mat-button (click)="createGroup()">Add Group</button>
+</div>
+
+{{groupModel | json}}

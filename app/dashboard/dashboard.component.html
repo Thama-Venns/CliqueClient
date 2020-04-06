@@ -1,0 +1,46 @@
+<app-navbar></app-navbar>
+<br>
+
+<div class="container">
+    <div class="row thama">
+        <div class="col-md-2 left-pane">
+            <div class="sidebar mb-4">
+                    <ul class="nav flex-column">
+                        <li class="nav-item" id="dash" (click)="activate('dash')">
+                            <button mat-button class="nav-link item"  routerLink="/">
+                                <mat-icon>apps</mat-icon>
+                                Dashboard <span class="sr-only">(current)</span>
+                            </button>
+                        </li>
+                        <li class="nav-item" id="profile" (click)="activate('profile')">
+                            <button mat-button class="nav-link item" routerLink="/profile">
+                                <mat-icon>person</mat-icon>
+                                Profile
+                            </button>
+                        </li>
+                        <li class="nav-item" id="groups" (click)="activate('groups')">
+                            <button mat-button class="nav-link item" routerLink="/groups">
+                                <mat-icon>people</mat-icon>
+                                Groups
+                            </button>
+                        </li>
+                        <li class="nav-item" id="connections" (click)="activate('connections')">
+                            <button mat-button class="nav-link item" routerLink="/connections">
+                                <mat-icon>contacts</mat-icon>
+                                Connections
+                            </button>
+                        </li>
+                        <li class="nav-item"  id="updates" (click)="activate('updates')">
+                            <button mat-button class="nav-link item" href="#">
+                                <mat-icon>poll</mat-icon>
+                                Updates
+                            </button>
+                        </li>
+                    </ul>
+            </div>
+        </div>
+    </div>
+
+    <router-outlet></router-outlet>
+</div>
+

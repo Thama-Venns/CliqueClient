@@ -1,0 +1,202 @@
+<app-dashboard></app-dashboard>
+
+<div class="container">
+
+  <div class="row">
+
+    <div class="col-md-8">
+      <div class="card mb-2 shadow-sm">
+        <div class="card-header">
+          <div class="post-head">
+            <p style="font-size: 1.5em; font-weight: bold">Notifications</p><br>
+
+            <button mat-button (click)="show = 'updates'">
+              <mat-icon>update</mat-icon> Updates
+            </button>
+            <div class="group-actions"  class="float-right">
+              <button mat-button (click)="show = 'connections'"> <mat-icon>person_add</mat-icon>Connections</button>
+              <button mat-button (click)="show = 'collaborations'"><mat-icon>add</mat-icon> Collaborations</button>
+              <button mat-button (click)="show = 'shares'"><mat-icon>share</mat-icon> Shares</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-body" *ngIf="show === 'connections'">
+          <h6 style="font-size: 1em; font-weight: bold">Connections</h6>
+
+          <div *ngIf="connections.length === 0">
+            <p style="margin-left: 35%"><mat-icon style="font-size: 15em">announcement</mat-icon></p><br>
+            <h6 style="font-size: 1.5em; text-align: center">You currently do not have any pending connections.</h6>
+          </div>
+
+          <div *ngIf="connections !== null">
+            <div *ngFor="let connection of connections">
+              <mat-list-item *ngIf="connection.receiver.id === user && connection.accepted === false">
+                <div class="requests d-flex justify-content-between align-items-center bottom-actions">
+                  <div class="float-left" style="width: 10%; height: inherit; position: absolute;">
+                    <mat-icon style="font-size: 80px;">account_circle</mat-icon>
+                  </div>
+                  <div class="user-info" style="padding-left: 13%; padding-top: 3%">
+                    <p>
+                      <a routerLink>{{connection.requester.firstName + " " + connection.requester.lastName}}</a>
+                      sent you a connection request.
+                      <br style="padding: 0; margin: 0">
+                      <small>Joined: {{connection.requester.joined | date:'medium'}}</small>
+                    </p>
+                  </div>
+                  <div class="action-buttons" style="padding: 0; margin: 0;">
+                    <button class="acc" (click)="acceptConnection(connection.id)" class="float-right" style="margin-left: 50" mat-icon-button>
+                      <mat-icon>check</mat-icon>
+                    </button>
+                    <button class="dec" (click)="declineConnection(user, profile.id)" class="float-right" style="margin-left: 50" mat-icon-button>
+                      <mat-icon>close</mat-icon>
+                    </button>
+                  </div>
+                </div>
+              </mat-list-item>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-body" *ngIf="show === 'collaborations'">
+          <h6 style="font-size: 1em; font-weight: bold">Collaborations</h6>
+
+          <div *ngIf="collaborations.length === 0">
+            <p style="margin-left: 35%"><mat-icon style="font-size: 15em">announcement</mat-icon></p><br>
+            <h6 style="font-size: 1.5em; text-align: center">You currently do not have any pending collaborations.</h6>
+          </div>
+
+          <div *ngIf="collaborations.length > 0">
+            <div *ngFor="let collaboration of collaborations">
+              <mat-list-item>
+                <!-- Unaccepted -->
+                <div  *ngIf="!consent(collaboration)" class="requests d-flex justify-content-between align-items-center bottom-actions">
+                  <div class="float-left" style="width: 10%; height: inherit; position: absolute;">
+                    <mat-icon style="font-size: 80px;">account_circle</mat-icon>
+                  </div>
+                  <div class="user-info" style="padding-left: 13%; padding-top: 8%">
+                    <p>
+                      <a routerLink>{{collaboration.profile.firstName + " " + collaboration.profile.lastName}}</a>
+                      was added to collaborate on this post.
+                      <br style="padding: 0; margin: 0">
+                      <small>Joined: {{collaboration.profile.joined | date:'medium'}}</small>
+                    </p>
+
+                    <!-- Print shares -->
+                    <div *ngIf="collaboration.consent.length > 0">
+                      Approvals:
+                      <small *ngFor="let consent of collaboration.consent">
+                        <a href="">{{consent.firstName}} {{consent.lastName}}</a>,
+                      </small>
+                    </div>
+
+                  </div>
+                  <div class="action-buttons" style="padding: 0; margin: 0;">
+                    <button class="acc" (click)="acceptCollaboration(user, collaboration.id)" class="float-right" style="margin-left: 50" mat-icon-button>
+                      <mat-icon>check</mat-icon>
+                    </button>
+                    <button class="dec" (click)="declineConnection(user, profile.id)" class="float-right" style="margin-left: 50" mat-icon-button>
+                      <mat-icon>close</mat-icon>
+                    </button>
+                  </div>
+                </div>
+                <!-- accepted -->
+                <div  *ngIf="consent(collaboration)" class="requests d-flex justify-content-between align-items-center bottom-actions">
+                  <div class="float-left" style="width: 10%; height: inherit; position: absolute;">
+                    <mat-icon style="font-size: 80px;">account_circle</mat-icon>
+                  </div>
+                  <div class="user-info" style="padding-left: 13%; padding-top: 8%">
+                    <p>
+                      <a routerLink>{{collaboration.profile.firstName + " " + collaboration.profile.lastName}}</a>
+                      was tagged on this post.
+                      <br style="padding: 0; margin: 0">
+                      <small>Joined: {{collaboration.profile.joined | date:'medium'}}</small>
+                    </p>
+                    <!-- Print approvals -->
+                    <div *ngIf="collaboration.consent.length > 0">
+                      Approvals:
+                      <small *ngFor="let consent of collaboration.consent">
+                        <a href="">{{consent.firstName}} {{consent.lastName}}</a>,
+                      </small>
+                    </div>
+                  </div>
+                  <div class="action-buttons" style="padding: 0; margin: 0;">
+                    <p>Approved</p>
+                  </div><hr>
+                </div>
+              </mat-list-item>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-body" *ngIf="show === 'shares'">
+          <h6 style="font-size: 1em; font-weight: bold">Sharing requests</h6>
+
+          <div *ngIf="shares.length === 0">
+            <p style="margin-left: 35%"><mat-icon style="font-size: 15em">announcement</mat-icon></p><br>
+            <h6 style="font-size: 1.5em; text-align: center">You currently do not have any pending share requests.</h6>
+          </div>
+
+          <div *ngIf="shares.length > 0">
+            <ul *ngFor="let share of shares">
+              <li *ngIf="!share.accepted; elseBlock">
+                <div class="float-left" style="width: 10%; height: inherit; position: absolute;">
+                  <mat-icon style="font-size: 70px;">account_circle</mat-icon>
+                </div>
+                <div class="user-info" style="padding-left: 12%; padding-top: 1%; padding-right: 8px">
+                  <div>
+                    <a routerLink>{{share.profile.firstName + " " + share.profile.lastName}}</a>
+                    wants to share your post from <a>{{share.post.group.groupName}}</a><br>
+                    <span>
+                      <div style="border: 1px silver; padding: 3px">
+                        {{share.post.postText}} <br>
+
+                        <!-- Print shares -->
+                        <div *ngIf="share.consent.length > 0" style="padding-top: 10px;">
+                          Approvals:
+                          <small *ngFor="let approval of share.consent">
+                            <a href="">{{approval.firstName}} {{approval.lastName}}</a>,
+                          </small>
+                        </div><br>
+
+                        <div class="action-buttons" style="padding: 0">
+                          <button (click)="acceptShare(share.id)" mat-raised-button style="margin-right: 15px; padding: 2">
+                            <mat-icon>check</mat-icon>  Accept
+                          </button>
+                          <button mat-raised-button style="margin-right: 15px; padding: 2">
+                            <mat-icon>close</mat-icon> Deny
+                          </button>
+                        </div>
+                      </div>
+                    </span>
+                  </div>
+                </div>
+              </li>
+              <ng-template #elseBlock>
+                <div>
+                  <p style="margin-left: 35%"><mat-icon style="font-size: 15em">announcement</mat-icon></p><br>
+                  <h6 style="font-size: 1.2em; text-align: center">You currently do not have any share requests.</h6>
+                </div>
+              </ng-template>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Right pane -->
+    <div class="col-md-4">
+      <div class="card mb-2 shadow-sm" style="padding-top: 15px">
+        <div class="info card-body">
+          <svg class="bd-placeholder-img rounded-circle" width="100" height="100" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 140x140"><title>Placeholder</title><rect width="100%" height="100%" fill="#777"></rect><text x="50%" y="50%" fill="#777" dy=".3em">140x140</text></svg>
+          <h5>{{profile.firstName + " " + profile.lastName}}</h5>
+          <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus.</p>
+          <p><a class="btn btn-secondary" style="color: #fff;" routerLink="profile" role="button">View profile »</a></p>
+        </div>
+      </div>
+    </div>
+
+  </div>  
+
+</div>

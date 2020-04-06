@@ -1,0 +1,116 @@
+// .post-settings li {
+//     width: 20px;
+// }
+// textarea {border: none}
+// .post-form {
+//     border: 1px solid silver;
+//     border-radius: 3px;
+//     background: #fff;
+// }
+
+// .form-inline .d-inline-block  {
+//     padding: 0 5px 0 0;
+// }
+
+// .submit  {
+//     right: 17px;
+//     position: absolute;
+//     float: right;
+//     top: 80px;
+// }
+a:hover {
+    cursor: pointer;
+    color: #26A69A;
+}
+
+.post-text {
+    width: 100%;
+    padding: 0
+}
+
+//updload button
+
+.comments p {
+    margin: 0;
+}
+
+.button-row button mat-icon {
+    font-size: 2em;
+    top: 0;
+    padding: 0;
+    margin: 0
+}
+
+.button-row button {
+    top: 0;
+    padding: 0;
+    margin: 0;
+    position: relative;
+}
+
+.button-row {
+    padding: 0;
+    margin: 0;
+}
+
+.post-text textarea {
+    width: 100%; height: 40px
+}
+
+
+//Tagging dialog
+.search-container {
+    display: flex;
+    flex-direction: column;
+  }
+
+  mat-checkbox {
+    position: relative;
+    margin-top: 5;
+  }
+
+.search-container > * {
+width: 100%;
+}
+
+li:hover, ng-template:hover {
+background: #fafafa;
+cursor: pointer;
+}
+
+.comment-post {
+cursor: pointer;
+}
+
+.drop mat-form-field mat-select mat-option-underline {
+    display: none
+}
+
+.card-header {
+    background: #fafafa73
+}
+
+.details p {
+    display: block;
+    padding: 0;
+    margin: 0 0 0 60px
+}
+
+.group :hover {
+    cursor: pointer;
+}
+/*::ng-deep .mat-form-field-underline {
+   display: none;
+}*/
+
+.row {
+    margin: -15px 0px 90px 180px;
+}
+
+.group-link {
+    cursor: pointer;
+}
+
+.grp:hover {
+    background: #fafafa73
+}

@@ -1,0 +1,151 @@
+<app-dashboard></app-dashboard>
+
+<div class="container">
+  <div class="row thama">
+
+    <!-- POSTS -->
+    <div class="col-md-8 content">
+
+      <div class="card mb-2 shadow-sm">
+        <div class="card-header">
+          <form #postForm="ngForm" class="post-head">
+            <div class="post-text">
+              <input type="text" [(ngModel)]="postModel.postText" name="postText" class="form-control z-depth-1" placeholder="Write something here...">
+            </div>
+
+            <div class="tags" *ngIf="postModel.collaborations.length !== 0">
+              Tags:
+              <span *ngFor="let collab of postModel.collaborations">
+                <a routerLink="profile/{{collab.profile.username}}" style="margin-left: 5px">
+                  {{collab.profile.firstName + " " + collab.profile.lastName}}
+                </a>,
+              </span>
+            </div>
+            
+            <div class="group-actions">
+              <input [(ngModel)]="postModel.image" type="file" style="display: none" name="image" #FileInput/>
+              <button mat-icon-button (click)="FileInput.click()"  matTooltip="Attach images">
+                <mat-icon>mms</mat-icon>
+              </button>
+              <button (click)="openDialog()" matTooltip="Collaborations" mat-icon-button>
+                <mat-icon>group_add</mat-icon>
+              </button>
+              <button mat-icon-button matTooltip="Select group" (click)=select.open()>
+                <mat-icon>people</mat-icon>
+                <mat-select #select [(ngModel)]="postModel.group.id" name="group" [(value)]="selected">
+                  <mat-option type="hidden" *ngFor="let group of groups" [value]="group.id">{{group.groupName}}</mat-option>
+                </mat-select>
+              </button>
+              <button mat-icon-button (click)="post()" type="submit"class="float-right">
+                <mat-icon>send</mat-icon>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div> 
+      <br>  
+
+      <!-- print posts -->
+      <div *ngFor="let post of posts" class="card mb-4 shadow-sm">
+
+        <div class="card-header">
+          <div class="post-head">
+            <embed class="profile-avatar float-left" src="../../assets/images/user.svg">
+            <small class="text-muted float-right">{{post.creation | date:'medium'}}</small>
+            <div class="details">
+              <p class="name"><a routerLink="profile/{{post.profile.username}}">{{post.profile.firstName}} {{post.profile.lastName}}</a></p>
+              <p ngbDropdown  class="group"><small>Posted To: <a routerLink="groups/{{post.group.groupName}}">
+                {{post.group.groupName}}</a></small>
+                <small ngbDropdownToggle class="float-right"><mat-icon>more_horiz</mat-icon>
+                  <div ngbDropdownMenu style="padding: 0">
+                    <button ngbDropdownItem><mat-icon class="float-left">add</mat-icon> Add collaboration</button>
+                    <button ngbDropdownItem><mat-icon class="float-left">create</mat-icon> Edit Post</button>
+                    <button ngbDropdownItem (click)="deletePost(post.id)"><mat-icon class="float-left">clear</mat-icon> Remove Post</button>
+                  </div>
+                </small>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-body">
+          <div class="post-body">
+            <!-- Post text -->
+            <p class="card-text">{{post.postText}}</p>
+            <!-- Print post images-->
+            <div *ngFor="let image of post.image">
+              <img [src]="image.path" alt="image not found">
+            </div>
+            <!-- Print tags -->
+            <div *ngIf="post.collaborations.length > 0">
+              <small *ngFor="let tag of post.collaborations">
+                With: <a href="">{{tag.profile.firstName}} {{tag.profile.lastName}}</a>
+              </small>
+            </div>
+
+            <!-- Print shares -->
+            <div *ngIf="post.shares.length > 0">
+              <small *ngFor="let share of post.shares">
+                Shared by: <a href="">{{share.profile.firstName}} {{share.profile.lastName}}</a>,
+              </small>
+            </div>
+
+            <!-- Print comments -->
+            <div *ngIf="post.comments.length > 0" class="comments">
+              <h6>{{post.comments.length}} Comments</h6>
+              <p *ngFor="let comment of post.comments">
+                <a routerLink="profile/{{comment.profile.username}}" style="margin-right:10px">{{comment.profile.firstName}} {{comment.profile.lastName}}</a>
+                <small class="text-muted">{{comment.comment}}</small>
+              </p>
+            </div>
+
+            <!--Leave comment-->
+            <form #commentForm="ngForm">
+              <mat-form-field style="width: 100%; padding: 0px;" appearance="standard">
+                <mat-label>Leave a comment</mat-label>
+                <input [(ngModel)]="commentModel.comment" name="comment" matInput maxlength="256" placeholder="Leave a comment">
+                <mat-icon (click)="addComment(post.id)" style="cursor: pointer" class="comment-post" matSuffix>send</mat-icon>
+              </mat-form-field>
+            </form>
+          </div>
+
+          <div class="d-flex justify-content-between align-items-center bottom-actions">
+            <div class="btn-group">
+              <button mat-icon-button (click)="likePost(post.id)" matTooltip="Like">
+                <mat-icon>thumb_up_alt</mat-icon><span *ngIf="post.likes > 0">{{post.likes}}</span>
+              </button>
+              <button mat-icon-button matTooltip="Share" (click)="openShareDialog(user, post.id)"> <!-- sharePost(user, post.id) -->
+                <mat-icon>share</mat-icon><span *ngIf="post.shares.length > 0">{{post.shares.length}}</span>
+              </button>
+              <button mat-icon-button matTooltip="Comments">
+                <mat-icon>comment</mat-icon><span *ngIf="post.comments.length !== 0">{{post.comments.length}}</span>
+              </button>
+            </div>
+            <!--Right-->
+            <div class="">
+              <button mat-icon-button matTooltip="collaborate">
+                <mat-icon>format_quote</mat-icon>
+              </button>
+              <button mat-icon-button matTooltip="Dispute">
+                <mat-icon>pan_tool</mat-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>           
+    </div>
+
+    <!-- Right pane -->
+    <div class="col-md-4">
+      <div class="card mb-2 shadow-sm" style="padding-top: 15px">
+        <div class="info card-body">
+          <svg class="bd-placeholder-img rounded-circle" width="100" height="100" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 140x140"><title>Placeholder</title><rect width="100%" height="100%" fill="#777"></rect><text x="50%" y="50%" fill="#777" dy=".3em">140x140</text></svg>
+          <h5>{{profile.firstName + " " + profile.lastName}}</h5>
+          <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus.</p>
+          <p><a class="btn btn-secondary" style="color: #fff;" routerLink="profile" role="button">View profile »</a></p>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+</div>

@@ -1,0 +1,53 @@
+.group-link {
+    width: 100%;
+}
+.group-link:hover, .group-link image:hover {
+    color: #26A69A;
+    background: #fafafa;
+}
+
+.icon {
+    margin-right: 15px;
+    top: -15px;
+    align-self: center;
+}
+
+.icon:hover {
+   fill: #26A69A;
+}
+
+.add-group-button {
+    float: right;
+    right: 0;
+    position: absolute;
+}
+
+.group-actions button {
+    margin-right: 5px
+}
+hr  {
+    padding: 0;
+    margin: 0
+}
+.post, .post-field {
+    width: 100%;
+}
+.post-field {
+    width: 74%;
+    height: 30px;
+}
+.post-field input {
+    border: none;
+    margin-top: 2px
+}
+.post {
+    display: inline-flex;
+}
+
+.apost {
+    padding-top: 2px;
+}
+
+.row {
+    margin: -15px 0px 90px 180px;
+}

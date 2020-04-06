@@ -1,0 +1,29 @@
+.connection-button-row {
+  float: right;
+  position: absolute;
+  right: 0;
+}
+
+.connection-button-row button {
+  margin-right: 8px;
+}
+
+.panel {
+    margin-bottom: 20px;
+}
+
+.acc, .dec {
+  padding-bottom: 10px;
+}
+
+.acc mat-icon:hover {
+  color: green
+}
+
+.dec mat-icon:hover {
+  color: red;
+}
+
+.row {
+  margin: -15px 0px 90px 180px;
+}

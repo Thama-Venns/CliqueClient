@@ -1,0 +1,24 @@
+.site-header {
+  background-color: #1B4682;
+  box-shadow: 0 3px 5px -1px rgba(0,0,0,.2),0 6px 10px 0 rgba(0,0,0,.14),0 1px 18px 0 rgba(0,0,0,.12) !important;
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  backdrop-filter: saturate(180%) blur(20px);
+}
+
+.site-header .py-2 {
+  color: #FFF;
+}
+.site-header a:hover, .home a:hover {
+  color: rgb(207, 207, 207);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.notifications-icon {
+  -moz-transform: scaleX(-1);
+  -o-transform: scaleX(-1);
+  -webkit-transform: scaleX(-1);
+  transform: scaleX(-1);
+  filter: FlipH;
+  -ms-filter: "FlipH";
+}
